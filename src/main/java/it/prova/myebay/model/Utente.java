@@ -38,6 +38,7 @@ public class Utente {
 	@Column(name = "dateCreated")
 	private Date dateCreated;
 	
+	//Variazione
 	@Column(name = "creditoResiduo")
 	private Integer creditoResiduo; 
 	
@@ -50,14 +51,22 @@ public class Utente {
 	@JoinTable(name = "utente_ruolo", joinColumns = @JoinColumn(name = "utente_id", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "ruolo_id", referencedColumnName = "ID"))
 	private Set<Ruolo> ruoli = new HashSet<>(0);
 	
-	//TO-DOs
+	//Variazione
+	//Molteplicità minima 0
 	@OneToMany(mappedBy = "utente")
-	private List<Annuncio> annuncio;
+	private List<Annuncio> annunci;
 	
+	//Variazione
+	//Molteplicità minima 0
 	@OneToMany(mappedBy = "utente")
-	private List<Acquisto> acquisto;
+	private List<Acquisto> acquist;
 
 	public Utente() {
+	}
+	
+	public Utente(Long id) {
+		super();
+		this.id = id;
 	}
 
 	public Utente(String username, String password) {
@@ -156,21 +165,21 @@ public class Utente {
 	public void setCreditoResiduo(Integer creditoResiduo) {
 		this.creditoResiduo = creditoResiduo;
 	}
-
-	public List<Annuncio> getAnnuncio() {
-		return annuncio;
+	
+	public List<Annuncio> getAnnunci() {
+		return annunci;
 	}
 
-	public void setAnnuncio(List<Annuncio> annuncio) {
-		this.annuncio = annuncio;
+	public void setAnnunci(List<Annuncio> annunci) {
+		this.annunci = annunci;
 	}
 
-	public List<Acquisto> getAcquisto() {
-		return acquisto;
+	public List<Acquisto> getAcquist() {
+		return acquist;
 	}
 
-	public void setAcquisto(List<Acquisto> acquisto) {
-		this.acquisto = acquisto;
+	public void setAcquist(List<Acquisto> acquist) {
+		this.acquist = acquist;
 	}
 
 	public boolean isAdmin() {

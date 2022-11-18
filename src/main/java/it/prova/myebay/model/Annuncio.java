@@ -1,6 +1,7 @@
 package it.prova.myebay.model;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -37,7 +38,21 @@ public class Annuncio {
 	
 	@ManyToMany
 	@JoinTable(name = "annuncio_categoria", joinColumns = @JoinColumn(name = "annuncio_id", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "categoria_id", referencedColumnName = "ID"))
-	private Set<Categoria> categorie;
+	private Set<Categoria> categorie = new HashSet<Categoria>();
+	
+	
+
+	public Annuncio(Long id) {
+		super();
+		this.id = id;
+	}
+
+	public Annuncio(Long id, String testoAnnuncio, Integer prezzo) {
+		super();
+		this.id = id;
+		this.testoAnnuncio = testoAnnuncio;
+		this.prezzo = prezzo;
+	}
 
 	public Long getId() {
 		return id;

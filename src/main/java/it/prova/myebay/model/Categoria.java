@@ -39,6 +39,11 @@ public class Categoria {
 		this.annunci = annunci;
 	}
 
+	public Categoria(Long id) {
+		// TODO Auto-generated constructor stub
+		this.id = id;
+	}
+
 	public Long getId() {
 		return id;
 	}
