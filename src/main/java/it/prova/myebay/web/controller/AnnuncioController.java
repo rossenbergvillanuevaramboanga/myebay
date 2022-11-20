@@ -94,6 +94,26 @@ public class AnnuncioController {
 				AnnuncioDTO.buildAnnuncioDTOFromModel(annuncioService.caricaSingoloAnnuncioEager(idAnnuncio), true, true));
 		return "showAnnuncio";
 	}
+	
+	@GetMapping("/remove/{idAnnuncio}")
+	public String deleteAnnuncio() {
+		return null;
+	}
+	
+	@PostMapping("/delete")
+	public String removeAnnuncio() {
+		return null;
+	}
+	
+	@GetMapping("/edit/{idAnnuncio}")
+	public String editAnnuncio() {
+		return null; 
+	}
+	
+	@PostMapping("/update")
+	public String updateAnnuncio(){
+		return null;
+	}
 
 
 }
