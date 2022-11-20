@@ -2,7 +2,6 @@ package it.prova.myebay.model;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -15,7 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -54,12 +52,12 @@ public class Utente {
 	//Variazione
 	//Molteplicità minima 0
 	@OneToMany(mappedBy = "utente")
-	private List<Annuncio> annunci;
+	private Set<Annuncio> annunci = new HashSet<>(0);
 	
 	//Variazione
 	//Molteplicità minima 0
 	@OneToMany(mappedBy = "utente")
-	private List<Acquisto> acquist;
+	private Set<Acquisto> acquisti = new HashSet<>(0);
 
 	public Utente() {
 	}
@@ -166,20 +164,20 @@ public class Utente {
 		this.creditoResiduo = creditoResiduo;
 	}
 	
-	public List<Annuncio> getAnnunci() {
+	public Set<Annuncio> getAnnunci() {
 		return annunci;
 	}
 
-	public void setAnnunci(List<Annuncio> annunci) {
+	public void setAnnunci(Set<Annuncio> annunci) {
 		this.annunci = annunci;
 	}
 
-	public List<Acquisto> getAcquist() {
-		return acquist;
+	public Set<Acquisto> getAcquist() {
+		return acquisti;
 	}
 
-	public void setAcquist(List<Acquisto> acquist) {
-		this.acquist = acquist;
+	public void setAcquist(Set<Acquisto> acquisti) {
+		this.acquisti = acquisti;
 	}
 
 	public boolean isAdmin() {

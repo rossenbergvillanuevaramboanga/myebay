@@ -71,7 +71,7 @@ public class AnnuncioServiceImpl implements AnnuncioService {
 	@Override
 	public List<Annuncio> findByExample(Annuncio annuncio) {
 		// TODO Auto-generated method stub
-		return null;
+		return repository.findByExample(annuncio);
 	}
 	
 	

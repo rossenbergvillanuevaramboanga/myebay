@@ -123,7 +123,7 @@ public class AnnuncioDTO {
 		;
 	}
 
-	private static AnnuncioDTO buildAnnuncioDTOFromModel(Annuncio annuncioModel, boolean includeUtente,
+	public static AnnuncioDTO buildAnnuncioDTOFromModel(Annuncio annuncioModel, boolean includeUtente,
 			boolean includeCategorie) {
 		// TODO Auto-generated method stub
 		

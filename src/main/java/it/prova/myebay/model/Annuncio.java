@@ -40,8 +40,6 @@ public class Annuncio {
 	@JoinTable(name = "annuncio_categoria", joinColumns = @JoinColumn(name = "annuncio_id", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "categoria_id", referencedColumnName = "ID"))
 	private Set<Categoria> categorie = new HashSet<Categoria>();
 	
-	
-
 	public Annuncio(Long id) {
 		super();
 		this.id = id;
