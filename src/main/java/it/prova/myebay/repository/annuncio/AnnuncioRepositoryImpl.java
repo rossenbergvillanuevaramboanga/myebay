@@ -14,14 +14,14 @@ import org.apache.commons.lang3.StringUtils;
 import it.prova.myebay.model.Annuncio;
 import it.prova.myebay.model.Categoria;
 
-public class AnnuncioRepositoryImpl implements CustomAnnuncioRepository{
+public class AnnuncioRepositoryImpl implements CustomAnnuncioRepository {
+
 	
 	@PersistenceContext
 	private EntityManager entityManager;
-
+	
 	@Override
 	public List<Annuncio> findByExample(Annuncio example) {
-		// TODO Auto-generated method stub
 		Map<String, Object> paramaterMap = new HashMap<String, Object>();
 		List<String> whereClauses = new ArrayList<String>();
 

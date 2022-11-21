@@ -43,10 +43,17 @@ public class RuoloServiceImpl implements RuoloService {
 		// TODO Auto-generated method stub
 
 	}
-
 	@Transactional(readOnly = true)
 	public Ruolo cercaPerDescrizioneECodice(String descrizione, String codice) {
 		return ruoloRepository.findByDescrizioneAndCodice(descrizione, codice);
+	}
+	
+	//Implement this
+
+	@Override
+	public List<Ruolo> findAllByIds(Long[] ruoliIds) {
+		// TODO Auto-generated method stub
+		return ruoloRepository.findAllByIds(ruoliIds);
 	}
 
 }

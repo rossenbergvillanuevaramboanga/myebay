@@ -9,11 +9,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import it.prova.myebay.model.Ruolo;
 import it.prova.myebay.model.Utente;
+import it.prova.myebay.service.CategoriaService;
 import it.prova.myebay.service.RuoloService;
 import it.prova.myebay.service.UtenteService;
-
-
-
 
 @SpringBootApplication
 public class MyebayApplication implements CommandLineRunner{
@@ -22,6 +20,8 @@ public class MyebayApplication implements CommandLineRunner{
 	private RuoloService ruoloServiceInstance;
 	@Autowired
 	private UtenteService utenteServiceInstance;
+	@Autowired
+	private CategoriaService categoriaServiceInstance;
 
 	public static void main(String[] args) {
 		SpringApplication.run(MyebayApplication.class, args);

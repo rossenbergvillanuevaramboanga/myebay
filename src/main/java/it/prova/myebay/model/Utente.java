@@ -39,7 +39,6 @@ public class Utente {
 	//Variazione
 	@Column(name = "creditoResiduo")
 	private Integer creditoResiduo; 
-	
 
 	// se non uso questa annotation viene gestito come un intero
 	@Enumerated(EnumType.STRING)
@@ -51,12 +50,12 @@ public class Utente {
 	
 	//Variazione
 	//Molteplicità minima 0
-	@OneToMany(mappedBy = "utente")
+	@OneToMany(mappedBy = "utenteInserimento")
 	private Set<Annuncio> annunci = new HashSet<>(0);
 	
 	//Variazione
 	//Molteplicità minima 0
-	@OneToMany(mappedBy = "utente")
+	@OneToMany(mappedBy = "utenteAcquirente")
 	private Set<Acquisto> acquisti = new HashSet<>(0);
 
 	public Utente() {
