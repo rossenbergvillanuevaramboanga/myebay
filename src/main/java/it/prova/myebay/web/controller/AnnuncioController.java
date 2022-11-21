@@ -24,6 +24,7 @@ import it.prova.myebay.service.UtenteService;
 import it.prova.myebay.dto.AnnuncioDTO;
 import it.prova.myebay.model.Annuncio;
 import it.prova.myebay.dto.RuoloDTO;
+import it.prova.myebay.dto.UtenteDTO;
 
 @Controller
 @RequestMapping(value = "/annuncio")
@@ -54,20 +55,20 @@ public class AnnuncioController {
 		return "annuncio/search";
 	}
 	
-	@PostMapping("/list")
+	@PostMapping("/annuncio/list")
 	public String listAnnunci(Annuncio annuncioExample, ModelMap model) {
 		model.addAttribute("annuncio_list_attribute",
 				AnnuncioDTO.createAnnuncioDTOListFromModelList(annuncioService.findByExample(annuncioExample), false, false));
 		return "annuncio/list";	
 	}
 	
-	@PostMapping("/insert")
+	@PostMapping("annuncio/insert")
 	public String create(Model model) {
 		model.addAttribute("insert_annuncio_attr", new AnnuncioDTO());
 		return "annuncio/insert";
 	}
 	
-	@PostMapping("/save")
+	@PostMapping("annuncio/save")
 	public String saveAnnuncio(
 			@Validated @ModelAttribute("insert_annuncio_attr") AnnuncioDTO annuncioDTO,
 			@RequestParam(name = "utenteId") Long utenteId,
@@ -81,7 +82,8 @@ public class AnnuncioController {
 		
 		annuncioDTO.setDateCreated(new Date());
 		annuncioDTO.setAperto(true);
-		annuncioDTO.setUtenteInserimentoId(utenteId);
+		annuncioDTO.setUtenteInserimento(UtenteDTO.buildUtenteDTOFromModel
+				(utenteService.caricaSingoloUtente(utenteId), true));
 		annuncioService.inserisciNuovo(annuncioDTO.buildAnnuncioModel(true,true));
 
 		redirectAttrs.addFlashAttribute("successMessage", "Annuncio inserito correttamente");

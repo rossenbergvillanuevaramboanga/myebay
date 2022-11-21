@@ -1,6 +1,7 @@
 <%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!doctype html>
 <html lang="it" class="h-100" >
 	 <head>
@@ -61,7 +62,7 @@
 				        <h1 class="display-5 fw-bold">MyEbay Web Application</h1>
 				        <p class="col-md-8 fs-4">Annuncio</p>
 				        
-							<form method="post" action="/list" class="row g-3">
+							<form method="post" action="${pageContext.request.contextPath}/annuncio/list" class="row g-3">
 							
 								<div class="col-md-6">
 									<label for="testoannuncio" class="form-label">Testo</label>
@@ -96,8 +97,12 @@
 				      </div>
 			    </div>
 			    
+			    
+			    
 			  </div>
 			  
+			  <!--  features di bootstrap 'Columns with icons'  -->
+			  <sec:authorize access="isAuthenticated()">
 			  <!--  features di bootstrap 'Columns with icons'  -->
 			  <div class="container px-4 py-5" id="featured-3">
 			    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
@@ -105,10 +110,10 @@
 			        <div class="feature-icon bg-primary bg-gradient">
 			          <svg class="bi" width="1em" height="1em"><use xlink:href="#collection"/></svg>
 			        </div>
-			        <h2>Ricerca Annunci</h2>
+			        <h2>Acquisti Effettuati</h2>
 			        <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-			        <a href="${pageContext.request.contextPath}/" class="icon-link">
-			          Work in progress
+			        <a href="${pageContext.request.contextPath}/acquisto/list" class="icon-link">
+			          Vai alla funzionalità
 			          <svg class="bi" width="1em" height="1em"><use xlink:href="#chevron-right"/></svg>
 			        </a>
 			      </div>
@@ -118,8 +123,8 @@
 			        </div>
 			        <h2>Inserisci Nuovo Annuncio</h2>
 			        <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-			        <a href="${pageContext.request.contextPath}/" class="icon-link">
-			          Work in progress
+			        <a href="${pageContext.request.contextPath}/annuncio/insert" class="icon-link">
+			          Vai alla funzionalità
 			          <svg class="bi" width="1em" height="1em"><use xlink:href="#chevron-right"/></svg>
 			        </a>
 			      </div>
@@ -127,15 +132,16 @@
 			        <div class="feature-icon bg-primary bg-gradient">
 			          <svg class="bi" width="1em" height="1em"><use xlink:href="#toggles2"/></svg>
 			        </div>
-			        <h2>Altro</h2>
+			        <h2>Gestione annunci</h2>
 			        <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-			        <a href="${pageContext.request.contextPath}/" class="icon-link">
-			          Work in progress
+			        <a href="${pageContext.request.contextPath}/annuncio/list" class="icon-link">
+			          Vai alla funzionalità
 			          <svg class="bi" width="1em" height="1em"><use xlink:href="#chevron-right"/></svg>
 			        </a>
 			      </div>
 			    </div>
 			  </div>
+			  </sec:authorize>
 			  
 			</main>
 			

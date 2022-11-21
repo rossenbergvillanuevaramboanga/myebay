@@ -44,6 +44,12 @@ public class Categoria {
 		this.id = id;
 	}
 
+	public Categoria(String descrizione, String codice) {
+		// TODO Auto-generated constructor stub
+		this.descrizione = descrizione;
+		this.codice=codice;
+	}
+
 	public Long getId() {
 		return id;
 	}

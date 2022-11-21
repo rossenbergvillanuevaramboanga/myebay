@@ -91,6 +91,16 @@ public class Utente {
 		this.stato = stato;
 	}
 
+	public Utente(String username, String password, String nome, String cognome, Date dateCreated, int creditoResiduo) {
+		// TODO Auto-generated constructor stub
+		this.username= username;
+		this.password=password;
+		this.nome=nome;
+		this.cognome=cognome;
+		this.dateCreated=dateCreated;
+		this.creditoResiduo=creditoResiduo;
+	}
+
 	public Long getId() {
 		return id;
 	}

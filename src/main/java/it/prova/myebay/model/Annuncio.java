@@ -14,6 +14,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name="annuncio")
@@ -45,11 +46,46 @@ public class Annuncio {
 		this.id = id;
 	}
 
-	public Annuncio(Long id, String testoAnnuncio, Integer prezzo) {
+	public Annuncio(String testoAnnuncio, Integer prezzo, Date dateCreated, Boolean aperto) {
+		super();
+		this.testoAnnuncio = testoAnnuncio;
+		this.prezzo = prezzo;
+		this.dateCreated = dateCreated;
+		this.aperto = aperto;
+	}
+	
+	
+
+	public Annuncio(Long id, String testoAnnuncio, Integer prezzo, Date dateCreated, Boolean aperto,
+			Utente utenteInserimento) {
 		super();
 		this.id = id;
 		this.testoAnnuncio = testoAnnuncio;
 		this.prezzo = prezzo;
+		this.dateCreated = dateCreated;
+		this.aperto = aperto;
+		this.utenteInserimento = utenteInserimento;
+	}
+
+	public Annuncio(Long id, String testoAnnuncio, Integer prezzo, Date dateCreated, Boolean aperto, Utente utenteInserimento,
+			Set<Categoria> categorie) {
+		super();
+		this.id = id;
+		this.testoAnnuncio = testoAnnuncio;
+		this.prezzo = prezzo;
+		this.dateCreated = dateCreated;
+		this.aperto = aperto;
+		this.utenteInserimento = utenteInserimento;
+		this.categorie = categorie;
+	}
+
+
+	public Annuncio(Long id, String testoAnnuncio, Integer prezzo, Date dateCreated, Boolean aperto) {
+		this.id=id;
+		this.testoAnnuncio=testoAnnuncio;
+		this.prezzo=prezzo;
+		this.dateCreated=dateCreated;
+		this.aperto=aperto;
 	}
 
 	public Long getId() {

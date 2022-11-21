@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import it.prova.myebay.model.Categoria;
 import it.prova.myebay.model.Ruolo;
 import it.prova.myebay.model.Utente;
 import it.prova.myebay.service.CategoriaService;
@@ -36,12 +37,19 @@ public class MyebayApplication implements CommandLineRunner{
 		if (ruoloServiceInstance.cercaPerDescrizioneECodice("Classic User", "ROLE_CLASSIC_USER") == null) {
 			ruoloServiceInstance.inserisciNuovo(new Ruolo("Classic User", "ROLE_CLASSIC_USER"));
 		}
-
-		// a differenza degli altri progetti cerco solo per username perche' se vado
-		// anche per password ogni volta ne inserisce uno nuovo, inoltre l'encode della password non lo 
-		//faccio qui perche gia lo fa il service di utente, durante inserisciNuovo
+		
+		if (categoriaServiceInstance.cercaPerDescrizioneECodice("Categoria Elettronica", "Elettronica") == null) {
+			categoriaServiceInstance.inserisciNuovo(new Categoria("Categoria Elettronica", "Elettronica"));
+		}
+		if (categoriaServiceInstance.cercaPerDescrizioneECodice("Categoria Casa", "Casa") == null) {
+			categoriaServiceInstance.inserisciNuovo(new Categoria("Categoria Casa", "Casa"));
+		}
+		if (categoriaServiceInstance.cercaPerDescrizioneECodice("Categoria Giochi", "Giochi") == null) {
+			categoriaServiceInstance.inserisciNuovo(new Categoria("Categoria Giochi", "Giochi"));
+		}
+		
 		if (utenteServiceInstance.findByUsername("admin") == null) {
-			Utente admin = new Utente("admin", "admin", "Mario", "Rossi", new Date());
+			Utente admin = new Utente("admin", "admin", "Mario", "Rossi", new Date(), 5000);
 			admin.getRuoli().add(ruoloServiceInstance.cercaPerDescrizioneECodice("Administrator", "ROLE_ADMIN"));
 			utenteServiceInstance.inserisciNuovo(admin);
 			//l'inserimento avviene come created ma io voglio attivarlo
@@ -49,30 +57,12 @@ public class MyebayApplication implements CommandLineRunner{
 		}
 
 		if (utenteServiceInstance.findByUsername("user") == null) {
-			Utente classicUser = new Utente("user", "user", "Antonio", "Verdi", new Date());
+			Utente classicUser = new Utente("user", "user", "Antonio", "Verdi", new Date(), 2000);
 			classicUser.getRuoli()
 					.add(ruoloServiceInstance.cercaPerDescrizioneECodice("Classic User", "ROLE_CLASSIC_USER"));
 			utenteServiceInstance.inserisciNuovo(classicUser);
 			//l'inserimento avviene come created ma io voglio attivarlo
 			utenteServiceInstance.changeUserAbilitation(classicUser.getId());
-		}
-
-		if (utenteServiceInstance.findByUsername("user1") == null) {
-			Utente classicUser1 = new Utente("user1", "user1", "Antonioo", "Verdii", new Date());
-			classicUser1.getRuoli()
-					.add(ruoloServiceInstance.cercaPerDescrizioneECodice("Classic User", "ROLE_CLASSIC_USER"));
-			utenteServiceInstance.inserisciNuovo(classicUser1);
-			//l'inserimento avviene come created ma io voglio attivarlo
-			utenteServiceInstance.changeUserAbilitation(classicUser1.getId());
-		}
-
-		if (utenteServiceInstance.findByUsername("user2") == null) {
-			Utente classicUser2 = new Utente("user2", "user2", "Antoniooo", "Verdiii", new Date());
-			classicUser2.getRuoli()
-					.add(ruoloServiceInstance.cercaPerDescrizioneECodice("Classic User", "ROLE_CLASSIC_USER"));
-			utenteServiceInstance.inserisciNuovo(classicUser2);
-			//l'inserimento avviene come created ma io voglio attivarlo
-			utenteServiceInstance.changeUserAbilitation(classicUser2.getId());
 		}
 	}
 

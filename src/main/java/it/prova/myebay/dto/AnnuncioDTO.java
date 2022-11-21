@@ -26,7 +26,7 @@ public class AnnuncioDTO {
 
 	private Boolean aperto;
 	
-	private Long utenteInserimentoId;
+	private UtenteDTO utenteInserimento;
 	
 	private Long[] categorieIds;
 	
@@ -41,6 +41,10 @@ public class AnnuncioDTO {
 		this.prezzo = prezzo;
 	}
 	
+	public AnnuncioDTO(Long id2, String testoAnnuncio2, Integer prezzo2, Date dateCreated2, Boolean aperto2) {
+		// TODO Auto-generated constructor stub
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -81,13 +85,13 @@ public class AnnuncioDTO {
 		this.aperto = aperto;
 	}
 
-	
-	public Long getUtenteInserimentoId() {
-		return utenteInserimentoId;
+
+	public UtenteDTO getUtenteInserimento() {
+		return utenteInserimento;
 	}
 
-	public void setUtenteInserimentoId(Long utenteInserimentoId) {
-		this.utenteInserimentoId = utenteInserimentoId;
+	public void setUtenteInserimento(UtenteDTO utenteInserimento) {
+		this.utenteInserimento = utenteInserimento;
 	}
 
 	public Long[] getCategorieIds() {
@@ -104,9 +108,7 @@ public class AnnuncioDTO {
 	
 	public Annuncio buildAnnuncioModel(boolean includeUtente, boolean includeCategorie) {
 		
-		Annuncio result = new Annuncio(this.id, this.testoAnnuncio, this.prezzo);
-		if(includeUtente && utenteInserimentoId != null)
-			result.setUtenteInserimento(new Utente(id));
+		Annuncio result = new Annuncio(this.id, this.testoAnnuncio, this.prezzo, this.dateCreated, this.aperto, this.utenteInserimento.buildUtenteModel(true));
 		
 		if(includeCategorie && categorieIds != null)
 			result.setCategorie(Arrays.asList(categorieIds).stream().map(id -> new Categoria(id)).collect(Collectors.toSet()));
@@ -127,18 +129,16 @@ public class AnnuncioDTO {
 			boolean includeCategorie) {
 		// TODO Auto-generated method stub
 		
-		AnnuncioDTO result = new AnnuncioDTO(
-				annuncioModel.getId(), 
-				annuncioModel.getTestoAnnuncio(), 
-				annuncioModel.getPrezzo());
+		AnnuncioDTO result = new AnnuncioDTO(annuncioModel.getId(), annuncioModel.getTestoAnnuncio(), annuncioModel.getPrezzo(),
+				annuncioModel.getDateCreated(), annuncioModel.getAperto());
 		
-		if(includeUtente && annuncioModel.getUtenteInserimento()!=null)
-			result.utenteInserimentoId = annuncioModel.getUtenteInserimento().getId();
+		if (includeUtente)
+			result.setUtenteInserimento(UtenteDTO.buildUtenteDTOFromModel(annuncioModel.getUtenteInserimento(), true));
 		
-		if(includeCategorie && !annuncioModel.getCategorie().isEmpty())
-			result.categorieIds = annuncioModel.getCategorie().stream().map(
-					c-> c.getId()).collect(Collectors.toList()).toArray(new Long[] {});
-				
+		if (annuncioModel.getCategorie() != null && includeCategorie && !annuncioModel.getCategorie().isEmpty())
+			result.categorieIds = annuncioModel.getCategorie().stream().map(r -> r.getId()).collect(Collectors.toList())
+					.toArray(new Long[] {});	
+
 		return result;
 	}
 
