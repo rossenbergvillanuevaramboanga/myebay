@@ -147,6 +147,32 @@ public class UtenteDTO {
 		this.ruoliIds = ruoliIds;
 	}
 	
+	
+	
+	public Integer getCreditoResiduo() {
+		return creditoResiduo;
+	}
+
+	public void setCreditoResiduo(Integer creditoResiduo) {
+		this.creditoResiduo = creditoResiduo;
+	}
+
+	public Long[] getAnnunciIds() {
+		return annunciIds;
+	}
+
+	public void setAnnunciIds(Long[] annunciIds) {
+		this.annunciIds = annunciIds;
+	}
+
+	public Long[] getAcquistiIds() {
+		return acquistiIds;
+	}
+
+	public void setAcquistiIds(Long[] acquistiIds) {
+		this.acquistiIds = acquistiIds;
+	}
+
 	public boolean isAttivo() {
 		return this.stato != null && this.stato.equals(StatoUtente.ATTIVO);
 	}

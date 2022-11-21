@@ -28,19 +28,19 @@ public class Acquisto {
 	
 	@ManyToOne
 	@JoinColumn(name="utente_id", nullable=false)
-	private Utente utenteAcquisto;
+	private Utente utenteAcquirente;
 	
 	public Acquisto() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Acquisto(Long id, String descrizione, Date dateCreated, Integer prezzo, Utente utenteAcquisto) {
+	public Acquisto(Long id, String descrizione, Date dateCreated, Integer prezzo, Utente utenteAcquirente) {
 		super();
 		this.id = id;
 		this.descrizione = descrizione;
 		this.dateCreated = dateCreated;
 		this.prezzo = prezzo;
-		this.utenteAcquisto = utenteAcquisto;
+		this.utenteAcquirente = utenteAcquirente;
 	}
 
 	public Long getId() {
@@ -75,12 +75,12 @@ public class Acquisto {
 		this.prezzo = prezzo;
 	}
 
-	public Utente getUtenteAcquisto() {
-		return utenteAcquisto;
+	public Utente getUtenteAcquirente() {
+		return utenteAcquirente;
 	}
 
-	public void setUtenteAcquisto(Utente utenteAcquisto) {
-		this.utenteAcquisto = utenteAcquisto;
+	public void setUtenteAcquirente(Utente utenteAcquirente) {
+		this.utenteAcquirente = utenteAcquirente;
 	}
 	
 	
