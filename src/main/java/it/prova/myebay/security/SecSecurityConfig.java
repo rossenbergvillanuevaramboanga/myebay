@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@SuppressWarnings("deprecation")
 @Configuration
 @EnableWebSecurity
 public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -37,16 +36,8 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
     	 http.authorizeRequests()
          .antMatchers("/assets/**").permitAll()
+         .antMatchers("/", "/home", "/annuncio/**", "/utente/insert", "/utente/saveSignUp").permitAll()
          .antMatchers("/login").permitAll()
-         .antMatchers("/listAnnuncio").permitAll()
-         .antMatchers("/showAnnuncio/**").permitAll()
-         //.antMatchers("/loginAcquisto/**").permitAll()
-         .antMatchers("/registrazione").permitAll()
-         .antMatchers("/registraUtente").permitAll()
-         
-         
-         .antMatchers("/home").permitAll()
-         .antMatchers("/").permitAll()
          .antMatchers("/utente/**").hasRole("ADMIN")
          .antMatchers("/**").hasAnyRole("ADMIN", "CLASSIC_USER")
          //.antMatchers("/anonymous*").anonymous()

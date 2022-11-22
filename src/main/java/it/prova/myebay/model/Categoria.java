@@ -1,20 +1,16 @@
 package it.prova.myebay.model;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="categoria")
+@Table(name = "categoria")
 public class Categoria {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -23,31 +19,27 @@ public class Categoria {
 	private String descrizione;
 	@Column(name = "codice")
 	private String codice;
-	
-	@ManyToMany
-	private List<Annuncio> annunci;
-	
+
 	public Categoria() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
 
-	public Categoria(Long id, String descrizione, String codice, List<Annuncio> annunci) {
+	public Categoria(Long id) {
+		super();
+		this.id = id;
+	}
+
+	public Categoria(Long id, String descrizione, String codice) {
 		super();
 		this.id = id;
 		this.descrizione = descrizione;
 		this.codice = codice;
-		this.annunci = annunci;
 	}
-
-	public Categoria(Long id) {
-		// TODO Auto-generated constructor stub
-		this.id = id;
-	}
-
+	
 	public Categoria(String descrizione, String codice) {
-		// TODO Auto-generated constructor stub
+		super();
 		this.descrizione = descrizione;
-		this.codice=codice;
+		this.codice = codice;
 	}
 
 	public Long getId() {
@@ -73,16 +65,5 @@ public class Categoria {
 	public void setCodice(String codice) {
 		this.codice = codice;
 	}
-
-	public List<Annuncio> getAnnunci() {
-		return annunci;
-	}
-
-	public void setAnnunci(List<Annuncio> annunci) {
-		this.annunci = annunci;
-	}
-	
-	
-	
 
 }

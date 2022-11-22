@@ -10,21 +10,22 @@ import it.prova.myebay.model.Categoria;
 import it.prova.myebay.repository.categoria.CategoriaRepository;
 
 @Service
-public class CategoriaServiceImpl implements CategoriaService {
-	
+public class CategoriaServiceImpl implements CategoriaService{
+
 	@Autowired
-	private CategoriaRepository categoriaRepository;
+	private CategoriaRepository repository;
 	
 	@Override
 	@Transactional(readOnly = true)
 	public List<Categoria> listAll() {
-		return (List<Categoria>)categoriaRepository.findAll();
+		return (List<Categoria>) repository.findAll();
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public Categoria caricaSingoloElemento(Long id) {
-		return categoriaRepository.findById(id).orElse(null);
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -37,12 +38,13 @@ public class CategoriaServiceImpl implements CategoriaService {
 	@Override
 	@Transactional
 	public void inserisciNuovo(Categoria categoriaInstance) {
-		categoriaRepository.save(categoriaInstance);
+		repository.save(categoriaInstance);
+		
 	}
 
 	@Override
 	@Transactional
-	public void rimuovi(Long id) {
+	public void rimuovi(Long idToDelete) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -50,7 +52,12 @@ public class CategoriaServiceImpl implements CategoriaService {
 	@Override
 	@Transactional(readOnly = true)
 	public Categoria cercaPerDescrizioneECodice(String descrizione, String codice) {
-		return categoriaRepository.findByDescrizioneAndCodice(descrizione, codice);
+		return repository.findByDescrizioneAndCodice(descrizione, codice);
+	}
+
+	@Override
+	public List<Categoria> cercaCategorieByIds(Long[] ids) {
+		return repository.findAllCategorieByIds(ids);
 	}
 
 }

@@ -7,10 +7,11 @@ import org.springframework.data.repository.CrudRepository;
 
 import it.prova.myebay.model.Ruolo;
 
-
-public interface RuoloRepository extends CrudRepository<Ruolo, Long> {
+public interface RuoloRepository extends CrudRepository<Ruolo, Long>{
 	Ruolo findByDescrizioneAndCodice(String descrizione, String codice);
 	
 	@Query("from Ruolo where id in ?1")
-	List<Ruolo> findAllByIds(Long[] ruoliIds);
+	List<Ruolo> findAllRuoliByIds(Long[] ids);
+	
+
 }

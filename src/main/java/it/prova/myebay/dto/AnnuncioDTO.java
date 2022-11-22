@@ -6,43 +6,54 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
-
+import it.prova.myebay.model.Acquisto;
 import it.prova.myebay.model.Annuncio;
 import it.prova.myebay.model.Categoria;
+import it.prova.myebay.model.Ruolo;
 import it.prova.myebay.model.Utente;
 
-
 public class AnnuncioDTO {
-	
-	private Long id;
-	
-	@NotBlank(message = "{testoAnnuncio.nonblank}")
-	private String testoAnnuncio;
-	@NotBlank(message = "{prezzo.nonblank}")
-	private Integer prezzo;
 
-	private Date dateCreated;
+	private Long id;
+
+	@NotBlank(message = "{testoannuncio.notblank}")
+	@Size(min = 10, max = 100, message = "Il valore inserito '${validatedValue}' deve essere lungo tra {min} e {max} caratteri")
+	private String testoAnnuncio;
+	@NotNull(message = "{prezzo.notnull}")
+	private Integer prezzo;
+	
+	private Date data;
 
 	private Boolean aperto;
-	
-	private UtenteDTO utenteInserimento;
+
+	private UtenteDTO utente;
 	
 	private Long[] categorieIds;
-	
+
 	public AnnuncioDTO() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
-	
-	public AnnuncioDTO(Long id, String testoAnnuncio, Integer prezzo) {
+
+	public AnnuncioDTO(Long id, String testoAnnuncio, Integer prezzo, Date data, Boolean aperto, UtenteDTO utente) {
 		super();
 		this.id = id;
 		this.testoAnnuncio = testoAnnuncio;
 		this.prezzo = prezzo;
+		this.data = data;
+		this.aperto = aperto;
+		this.utente = utente;
 	}
-	
-	public AnnuncioDTO(Long id2, String testoAnnuncio2, Integer prezzo2, Date dateCreated2, Boolean aperto2) {
-		// TODO Auto-generated constructor stub
+
+	public AnnuncioDTO(Long id, String testoAnnuncio, Integer prezzo, Date data, Boolean aperto) {
+		super();
+		this.id = id;
+		this.testoAnnuncio = testoAnnuncio;
+		this.prezzo = prezzo;
+		this.data = data;
+		this.aperto = aperto;
 	}
 
 	public Long getId() {
@@ -69,12 +80,12 @@ public class AnnuncioDTO {
 		this.prezzo = prezzo;
 	}
 
-	public Date getDateCreated() {
-		return dateCreated;
+	public Date getData() {
+		return data;
 	}
 
-	public void setDateCreated(Date dateCreated) {
-		this.dateCreated = dateCreated;
+	public void setData(Date data) {
+		this.data = data;
 	}
 
 	public Boolean getAperto() {
@@ -85,15 +96,14 @@ public class AnnuncioDTO {
 		this.aperto = aperto;
 	}
 
-
-	public UtenteDTO getUtenteInserimento() {
-		return utenteInserimento;
+	public UtenteDTO getUtente() {
+		return utente;
 	}
 
-	public void setUtenteInserimento(UtenteDTO utenteInserimento) {
-		this.utenteInserimento = utenteInserimento;
+	public void setUtente(UtenteDTO utente) {
+		this.utente = utente;
 	}
-
+	
 	public Long[] getCategorieIds() {
 		return categorieIds;
 	}
@@ -101,47 +111,36 @@ public class AnnuncioDTO {
 	public void setCategorieIds(Long[] categorieIds) {
 		this.categorieIds = categorieIds;
 	}
-	
-	public boolean isAperto() {
-		return this.aperto;
-	}
-	
-	public Annuncio buildAnnuncioModel(boolean includeUtente, boolean includeCategorie) {
+
+	public Annuncio buildAnnuncioModel(boolean includeIdCategorie) {
+		Annuncio result = new Annuncio(this.id, this.testoAnnuncio, this.prezzo, this.data, this.aperto,
+				this.utente.buildUtenteModel(false));
 		
-		Annuncio result = new Annuncio(this.id, this.testoAnnuncio, this.prezzo, this.dateCreated, this.aperto, this.utenteInserimento.buildUtenteModel(true));
-		
-		if(includeCategorie && categorieIds != null)
+		if (includeIdCategorie && categorieIds != null)
 			result.setCategorie(Arrays.asList(categorieIds).stream().map(id -> new Categoria(id)).collect(Collectors.toSet()));
 		
 		return result;
-		
 	}
 
-	public static List<AnnuncioDTO> createAnnuncioDTOListFromModelList(List<Annuncio> modelListInput, boolean includeUtente, boolean includeCategorie) {
-		// TODO Auto-generated method stub
-		return modelListInput.stream().map( annuncioEntity -> {
-			return AnnuncioDTO.buildAnnuncioDTOFromModel(annuncioEntity, includeUtente, includeCategorie);
-		}).collect(Collectors.toList())
-		;
-	}
+	public static AnnuncioDTO buildAnnuncioDTOFromModel(Annuncio annuncioModel, boolean includeUtente, boolean includeCategorie) {
+		AnnuncioDTO result = new AnnuncioDTO(annuncioModel.getId(), annuncioModel.getTestoAnnuncio(),
+				annuncioModel.getPrezzo(), annuncioModel.getData(), annuncioModel.getAperto());
 
-	public static AnnuncioDTO buildAnnuncioDTOFromModel(Annuncio annuncioModel, boolean includeUtente,
-			boolean includeCategorie) {
-		// TODO Auto-generated method stub
-		
-		AnnuncioDTO result = new AnnuncioDTO(annuncioModel.getId(), annuncioModel.getTestoAnnuncio(), annuncioModel.getPrezzo(),
-				annuncioModel.getDateCreated(), annuncioModel.getAperto());
-		
 		if (includeUtente)
-			result.setUtenteInserimento(UtenteDTO.buildUtenteDTOFromModel(annuncioModel.getUtenteInserimento(), true));
+			result.setUtente(UtenteDTO.buildUtenteDTOFromModel(annuncioModel.getUtente(), false));
 		
 		if (annuncioModel.getCategorie() != null && includeCategorie && !annuncioModel.getCategorie().isEmpty())
 			result.categorieIds = annuncioModel.getCategorie().stream().map(r -> r.getId()).collect(Collectors.toList())
-					.toArray(new Long[] {});	
+					.toArray(new Long[] {});
 
 		return result;
 	}
 
-	
+	public static List<AnnuncioDTO> createAnnuncioDTOFromModelList(List<Annuncio> modelListInput,
+			boolean includeUtente, boolean includeCategorie) {
+		return modelListInput.stream().map(annuncioEntity -> {
+			return AnnuncioDTO.buildAnnuncioDTOFromModel(annuncioEntity, includeUtente, includeCategorie);
+		}).collect(Collectors.toList());
+	}
 
 }

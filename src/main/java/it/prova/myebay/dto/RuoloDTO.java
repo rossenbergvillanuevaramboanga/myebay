@@ -57,5 +57,12 @@ public class RuoloDTO {
 			return RuoloDTO.buildRuoloDTOFromModel(ruoloEntity);
 		}).collect(Collectors.toList());
 	}
+
+	@Override
+	public String toString() {
+		return descrizione;
+	}
+	
+	
 	
 }

@@ -10,46 +10,52 @@ import it.prova.myebay.model.Acquisto;
 import it.prova.myebay.repository.acquisto.AcquistoRepository;
 
 @Service
-public class AcquistoServiceImpl implements AcquistoService {
-	
+public class AcquistoServiceImpl implements AcquistoService{
+
 	@Autowired
-	private AcquistoRepository acquistoRepository;
+	private AcquistoRepository repository;
 	
 	@Override
 	@Transactional(readOnly = true)
 	public List<Acquisto> listAll() {
-		return (List<Acquisto>) acquistoRepository.findAll();
+		return (List<Acquisto>) repository.findAll();
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public Acquisto caricaSingoloElemento(Long id) {
-		return acquistoRepository.findById(id).orElse(null);
+		return repository.findById(id).orElse(null);
 	}
 
 	@Override
 	@Transactional
 	public void aggiorna(Acquisto acquistoInstance) {
-		acquistoRepository.save(acquistoInstance);
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	@Transactional
 	public void inserisciNuovo(Acquisto acquistoInstance) {
-		acquistoRepository.save(acquistoInstance);
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	@Transactional
-	public void rimuovi(Long id) {
-		acquistoRepository.deleteById(id);
+	public void rimuovi(Long idToDelete) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
-	@Transactional(readOnly = true)
-	public List<Acquisto> findAllById(Long id) {
-		// TODO Auto-generated method stub
-		return acquistoRepository.findAllById(id);
+	public List<Acquisto> findByExample(Acquisto example) {
+		return repository.findByExample(example);
+	}
+
+	@Override
+	public List<Acquisto> findAllAcquistiEagerUtente(Long id) {
+		return repository.findAcquistiUtente(id);
 	}
 
 }

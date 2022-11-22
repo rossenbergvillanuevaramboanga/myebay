@@ -22,29 +22,29 @@
 			  
 			  		<div class='card'>
 					    <div class='card-header'>
-					        <h5>Sicuro di voler procedere all'eliminazione?</h5>
+					        <h5>Visualizza dettaglio</h5>
 					    </div>
 					    
 					
 					    <div class='card-body'>
 					    	<dl class="row">
 							  <dt class="col-sm-3 text-right">Id:</dt>
-							  <dd class="col-sm-9">${delete_annuncio_attr.id}</dd>
+							  <dd class="col-sm-9">${show_annuncio_attr.id}</dd>
 					    	</dl>
 					    	
 					    	<dl class="row">
 							  <dt class="col-sm-3 text-right">Testo Annuncio:</dt>
-							  <dd class="col-sm-9">${delete_annuncio_attr.testoAnnuncio}</dd>
+							  <dd class="col-sm-9">${show_annuncio_attr.testoAnnuncio}</dd>
 					    	</dl>
 					    	
 					    	<dl class="row">
 							  <dt class="col-sm-3 text-right">Prezzo:</dt>
-							  <dd class="col-sm-9">${delete_annuncio_attr.prezzo}</dd>
+							  <dd class="col-sm-9">${show_annuncio_attr.prezzo}</dd>
 					    	</dl>
 					    	
 					    	<dl class="row">
 							  <dt class="col-sm-3 text-right">Data creazione:</dt>
-							  <dd class="col-sm-9"><fmt:formatDate type = "date" value = "${delete_annuncio_attr.data}" /></dd>
+							  <dd class="col-sm-9"><fmt:formatDate type = "date" value = "${show_annuncio_attr.data}" /></dd>
 					    	</dl>
 					    	
 					    	<dl class="row">
@@ -58,13 +58,9 @@
 					    </div>
 					    
 					    <div class='card-footer'>
-					    <form action="${pageContext.request.contextPath}/annuncio/remove" method="post">
-					    	<input type="hidden" name="idAnnuncio" value="${delete_annuncio_attr.id}">
-					    	<button type="submit" name="submit" id="submit" class="btn btn-danger">Conferma</button>
-					        	<a href="${pageContext.request.contextPath }/annuncio/listUtente" class='btn btn-outline-secondary' style='width:80px'>
-					        	    <i class='fa fa-chevron-left'></i> Back
-					       		</a>
-					    </form>
+					        <a href="${pageContext.request.contextPath }/annuncio/listUtente" class='btn btn-outline-secondary' style='width:80px'>
+					            <i class='fa fa-chevron-left'></i> Back
+					        </a>
 					    </div>
 					<!-- end card -->
 					</div>	

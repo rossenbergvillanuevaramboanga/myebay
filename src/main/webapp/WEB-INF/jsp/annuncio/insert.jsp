@@ -50,28 +50,26 @@
 					
 							
 								<div class="col-md-6">
-									<label for="testoAnnuncio" class="form-label">Descrizione prodotto <span class="text-danger">*</span></label>
+									<label for="testoAnnuncio" class="form-label">Testo annuncio: <span class="text-danger">*</span></label>
 									<spring:bind path="testoAnnuncio">
-										<input type="text" name="testoAnnuncio" id="testoAnnuncio" class="form-control ${status.error ? 'is-invalid' : ''}" placeholder="Inserire il testo" value="${insert_annuncio_attr.testoAnnuncio }" required>
+										<input type="text" name="testoAnnuncio" id="testoAnnuncio" class="form-control ${status.error ? 'is-invalid' : ''}" placeholder="Inserire il testo dell'annuncio" value="${insert_annuncio_attr.testoAnnuncio }" required>
 									</spring:bind>
 									<form:errors  path="testoAnnuncio" cssClass="error_field" />
 								</div>
 								
 								<div class="col-md-6">
-										<label for="prezzo" class="form-label">Prezzo (euro) <span class="text-danger">*</span></label>
-										<spring:bind path="prezzo">
-											<input type="number" class="form-control ${status.error ? 'is-invalid' : ''}" name="prezzo" id="prezzo" placeholder="Inserire prezzo " value="${insert_annuncio_attr.prezzo }">
-										</spring:bind>
-										<form:errors  path="prezzo" cssClass="error_field" />
+									<label for="prezzo" class="form-label">Prezzo: <span class="text-danger">*</span></label>
+									<spring:bind path="prezzo">
+										<input type="number" name="prezzo" id="prezzo" class="form-control ${status.error ? 'is-invalid' : ''}" placeholder="Inserire il prezzo" value="${insert_annuncio_attr.prezzo }" required>
+									</spring:bind>
+									<form:errors  path="prezzo" cssClass="error_field" />
 								</div>
 								
-								
-								
-								<%--  checkbox ruoli 	--%>
+								<%--  checkbox categorie 	--%>
 								<%-- facendolo con i tag di spring purtroppo viene un po' spaginato quindi aggiungo class 'a mano'	--%>
-								<div class="col-md-6 form-check" id="ruoliDivId">
-									<p>Categorie:</p>
-									<form:checkboxes itemValue="id" itemLabel="codice"  element="div class='form-check'" items="${categorie_totali_attr}" path="categorieIds" />
+								<div class="col-md-6 form-check" id="categorieDivId">
+									<p style="margin-left: 30px;"><b>Categorie:</b></p>
+									<form:checkboxes itemValue="id" itemLabel="descrizione"  element="div class='form-check'" items="${categorie_totali_attr}" path="categorieIds" />
 								</div>
 								<script>
 									$(document).ready(function(){
@@ -85,13 +83,8 @@
 										
 									});
 								</script>
-								<%-- fine checkbox ruoli 	--%>
+								<%-- fine checkbox categorie 	--%>
 								
-								
-								
-								
-								
-								<input type="hidden" name="utenteId" id="utenteId" value="${userInfo.id}">	
 								
 								<div class="col-12">
 									<button type="submit" name="submit" value="submit" id="submit" class="btn btn-primary">Conferma</button>

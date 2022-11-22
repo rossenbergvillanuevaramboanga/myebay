@@ -1,3 +1,4 @@
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!doctype html>
 <html lang="it">
 	<head>
@@ -14,10 +15,15 @@
 	
 	<body class="text-center">
 		<main class="form-signin">
+		<a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/home">Home</a>
 			<form class="form-signin" name='login' action="login" method='POST' novalidate="novalidate">
 		   	
 			   	<div class="alert alert-danger alert-dismissible fade show ${errorMessage==null?'d-none': ''}" role="alert">
 				  ${errorMessage}
+				</div>
+				
+				<div class="alert alert-success alert-dismissible fade show ${successMessage==null?'d-none': ''}" role="alert">
+				  ${successMessage}
 				</div>
 				
 				<div class="alert alert-info alert-dismissible fade show ${infoMessage==null?'d-none': ''}" role="alert">
@@ -44,7 +50,9 @@
 			      </label>
 			    </div>
 			    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
-			    <p class="mt-5 mb-3 text-muted">&copy; 2017-2021</p>
+			    <p class="mt-5 mb-3 text-muted">&copy; 2022-2023</p>
+			    Not registered? 
+			    <a href="${pageContext.request.contextPath}/utente/insert">Click here</a>
 			  
 			  
 			  

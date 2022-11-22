@@ -22,11 +22,6 @@
 			  </button>
 			</div>
 			
-			<div class="alert alert-warning alert-dismissible fade show " role="alert">
-			  Attenzione!!! Funzionalità ancora non implementata. Sulla 'Conferma' per il momento parte il 'listAll'
-			  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" ></button>
-			</div>
-			
 			<div class='card'>
 			    <div class='card-header'>
 			        <h5>Ricerca elementi</h5> 
@@ -53,6 +48,11 @@
 								<label for="dateCreated" class="form-label">Data di Creazione</label>
                         		<input class="form-control" id="dateCreated" type="date" placeholder="dd/MM/yy"
                             		title="formato : gg/mm/aaaa"  name="dateCreated" >
+							</div>
+							
+							<div class="col-md-6">
+								<label for="creditoResiduo" class="form-label">Credito Residuo</label>
+								<input type="number" class="form-control" name="creditoResiduo" id="creditoResiduo" placeholder="A partire da..." >
 							</div>
 							
 							<div class="col-md-3">

@@ -1,3 +1,4 @@
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <!doctype html>
@@ -39,15 +40,19 @@
 			  
 			  <div class='card'>
 				    <div class='card-header'>
-				        <h5>Inserisci nuovo elemento</h5> 
+				    <sec:authorize access="hasRole('ADMIN')">
+				        <h5>Inserisci nuovo elemento</h5>
+				    </sec:authorize>
+				    <sec:authorize access="!isAuthenticated()">
+				    	<h5>Registrati</h5>
+				    </sec:authorize>
 				    </div>
 				    <div class='card-body'>
 		
 							<h6 class="card-title">I campi con <span class="text-danger">*</span> sono obbligatori</h6>
 		
-		
-							<form:form modelAttribute="insert_utente_attr" method="post" action="save" novalidate="novalidate" class="row g-3">
-					
+							<form:form modelAttribute="insert_utente_attr" method="post" action="${userInfo == null?'saveSignUp':'save' }" novalidate="novalidate" class="row g-3">
+						
 							
 								<div class="col-md-6">
 									<label for="nome" class="form-label">Nome <span class="text-danger">*</span></label>
@@ -88,7 +93,7 @@
 									<form:errors  path="confermaPassword" cssClass="error_field" />
 								</div>
 								
-								
+								<sec:authorize access="hasRole('ADMIN')">
 								<%--  checkbox ruoli 	--%>
 								<%-- facendolo con i tag di spring purtroppo viene un po' spaginato quindi aggiungo class 'a mano'	--%>
 								<div class="col-md-6 form-check" id="ruoliDivId">
@@ -108,7 +113,7 @@
 									});
 								</script>
 								<%-- fine checkbox ruoli 	--%>
-								
+								</sec:authorize>
 								
 								<div class="col-12">
 									<button type="submit" name="submit" value="submit" id="submit" class="btn btn-primary">Conferma</button>
@@ -116,7 +121,6 @@
 								</div>
 		
 						</form:form>
-  
 				    
 				    
 					<!-- end card-body -->			   

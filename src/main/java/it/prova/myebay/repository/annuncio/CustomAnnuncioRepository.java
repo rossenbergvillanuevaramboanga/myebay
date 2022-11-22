@@ -5,6 +5,7 @@ import java.util.List;
 import it.prova.myebay.model.Annuncio;
 
 public interface CustomAnnuncioRepository {
-
-	List<Annuncio> findByExample(Annuncio example);
+	public List<Annuncio> findByExample(Annuncio example);
+	
+	public List<Annuncio> findByExampleEager(Annuncio example);
 }

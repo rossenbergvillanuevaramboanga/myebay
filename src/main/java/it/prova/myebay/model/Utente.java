@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,6 +17,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
 
 @Entity
 @Table(name = "utente")
@@ -35,35 +37,24 @@ public class Utente {
 	private String cognome;
 	@Column(name = "dateCreated")
 	private Date dateCreated;
-	
-	//Variazione
 	@Column(name = "creditoResiduo")
-	private Integer creditoResiduo; 
+	private Integer creditoResiduo;
 
 	// se non uso questa annotation viene gestito come un intero
 	@Enumerated(EnumType.STRING)
 	private StatoUtente stato;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "utente")
+	private Set<Annuncio> annunci = new HashSet<Annuncio>(0);
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "utente")
+	private Set<Acquisto> acquisti = new HashSet<Acquisto>(0);
 
 	@ManyToMany
 	@JoinTable(name = "utente_ruolo", joinColumns = @JoinColumn(name = "utente_id", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "ruolo_id", referencedColumnName = "ID"))
 	private Set<Ruolo> ruoli = new HashSet<>(0);
-	
-	//Variazione
-	//Molteplicità minima 0
-	@OneToMany(mappedBy = "utenteInserimento")
-	private Set<Annuncio> annunci = new HashSet<>(0);
-	
-	//Variazione
-	//Molteplicità minima 0
-	@OneToMany(mappedBy = "utenteAcquirente")
-	private Set<Acquisto> acquisti = new HashSet<>(0);
 
 	public Utente() {
-	}
-	
-	public Utente(Long id) {
-		super();
-		this.id = id;
 	}
 
 	public Utente(String username, String password) {
@@ -90,15 +81,18 @@ public class Utente {
 		this.dateCreated = dateCreated;
 		this.stato = stato;
 	}
-
-	public Utente(String username, String password, String nome, String cognome, Date dateCreated, int creditoResiduo) {
-		// TODO Auto-generated constructor stub
-		this.username= username;
-		this.password=password;
-		this.nome=nome;
-		this.cognome=cognome;
-		this.dateCreated=dateCreated;
-		this.creditoResiduo=creditoResiduo;
+	
+	public Utente(Long id, String username, String password, String nome, String cognome, Date dateCreated,
+			Integer creditoResiduo, StatoUtente stato) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.nome = nome;
+		this.cognome = cognome;
+		this.dateCreated = dateCreated;
+		this.creditoResiduo = creditoResiduo;
+		this.stato = stato;
 	}
 
 	public Long getId() {
@@ -180,12 +174,12 @@ public class Utente {
 	public void setAnnunci(Set<Annuncio> annunci) {
 		this.annunci = annunci;
 	}
-
-	public Set<Acquisto> getAcquist() {
+	
+	public Set<Acquisto> getAcquisti() {
 		return acquisti;
 	}
 
-	public void setAcquist(Set<Acquisto> acquisti) {
+	public void setAcquisti(Set<Acquisto> acquisti) {
 		this.acquisti = acquisti;
 	}
 

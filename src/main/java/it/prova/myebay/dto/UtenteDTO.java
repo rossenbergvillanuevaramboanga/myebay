@@ -2,19 +2,21 @@ package it.prova.myebay.dto;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import it.prova.myebay.model.Acquisto;
+import it.prova.myebay.model.Annuncio;
 import it.prova.myebay.model.Ruolo;
 import it.prova.myebay.model.StatoUtente;
 import it.prova.myebay.model.Utente;
 import it.prova.myebay.validation.ValidationNoPassword;
 import it.prova.myebay.validation.ValidationWithPassword;
-
-
 
 public class UtenteDTO {
 
@@ -38,20 +40,29 @@ public class UtenteDTO {
 
 	private Date dateCreated;
 
+	private Integer creditoResiduo;
+
 	private StatoUtente stato;
 
 	private Long[] ruoliIds;
-	
-	//Variazione
-	private Integer creditoResiduo; 
-	
-	private Long[] annunciIds;
-	
-	private Long[] acquistiIds;
+
+	private Set<Annuncio> annunci = new HashSet<>();
+
+	private Set<Acquisto> acquisti = new HashSet<>();
 
 	public UtenteDTO() {
 	}
 
+	public UtenteDTO(Long id, String username, String nome, String cognome, StatoUtente stato, Integer creditoResiduo) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.nome = nome;
+		this.cognome = cognome;
+		this.stato = stato;
+		this.creditoResiduo = creditoResiduo;
+	}
+	
 	public UtenteDTO(Long id, String username, String nome, String cognome, StatoUtente stato) {
 		super();
 		this.id = id;
@@ -59,20 +70,6 @@ public class UtenteDTO {
 		this.nome = nome;
 		this.cognome = cognome;
 		this.stato = stato;
-	}
-
-	public UtenteDTO(Long id, String username, String nome, String cognome,
-			StatoUtente stato, Long[] ruoliIds, Integer creditoResiduo, Long[] annunciIds, Long[] acquistiIds) {
-		super();
-		this.id = id;
-		this.username = username;
-		this.nome = nome;
-		this.cognome = cognome;
-		this.stato = stato;
-		this.ruoliIds = ruoliIds;
-		this.creditoResiduo = creditoResiduo;
-		this.annunciIds = annunciIds;
-		this.acquistiIds = acquistiIds;
 	}
 
 	public Long getId() {
@@ -146,9 +143,23 @@ public class UtenteDTO {
 	public void setRuoliIds(Long[] ruoliIds) {
 		this.ruoliIds = ruoliIds;
 	}
-	
-	
-	
+
+	public Set<Acquisto> getAcquisti() {
+		return acquisti;
+	}
+
+	public void setAcquisti(Set<Acquisto> acquisti) {
+		this.acquisti = acquisti;
+	}
+
+	public Set<Annuncio> getAnnunci() {
+		return annunci;
+	}
+
+	public void setAnnunci(Set<Annuncio> annunci) {
+		this.annunci = annunci;
+	}
+
 	public Integer getCreditoResiduo() {
 		return creditoResiduo;
 	}
@@ -157,36 +168,27 @@ public class UtenteDTO {
 		this.creditoResiduo = creditoResiduo;
 	}
 
-	public Long[] getAnnunciIds() {
-		return annunciIds;
-	}
-
-	public void setAnnunciIds(Long[] annunciIds) {
-		this.annunciIds = annunciIds;
-	}
-
-	public Long[] getAcquistiIds() {
-		return acquistiIds;
-	}
-
-	public void setAcquistiIds(Long[] acquistiIds) {
-		this.acquistiIds = acquistiIds;
-	}
-
 	public boolean isAttivo() {
 		return this.stato != null && this.stato.equals(StatoUtente.ATTIVO);
 	}
 
 	public Utente buildUtenteModel(boolean includeIdRoles) {
 		Utente result = new Utente(this.id, this.username, this.password, this.nome, this.cognome, this.dateCreated,
-				this.stato);
+				this.creditoResiduo, this.stato);
+		
 		if (includeIdRoles && ruoliIds != null)
 			result.setRuoli(Arrays.asList(ruoliIds).stream().map(id -> new Ruolo(id)).collect(Collectors.toSet()));
-
+		
+		if(this.annunci.size() > 0)
+			result.setAnnunci(annunci);
+		
+		if(this.acquisti.size() > 0)
+			result.setAcquisti(acquisti);
+		
 		return result;
 	}
 
-	// niente password...
+	// niente password, credito residuo, annunci o acquisti...
 	public static UtenteDTO buildUtenteDTOFromModel(Utente utenteModel, boolean includeRoles) {
 		UtenteDTO result = new UtenteDTO(utenteModel.getId(), utenteModel.getUsername(), utenteModel.getNome(),
 				utenteModel.getCognome(), utenteModel.getStato());
