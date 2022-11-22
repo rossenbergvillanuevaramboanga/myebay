@@ -125,9 +125,7 @@ public class AnnuncioController {
 					CategoriaDTO.createCategoriaDTOListFromModelList(categoriaService.listAll()));
 			return "annuncio/insert";
 		}
-		//Inserire nel service
-//		UtenteDTO utenteInSessione = (UtenteDTO) request.getSession().getAttribute("userInfo");
-//		annuncioDTO.setUtente(utenteInSessione);
+
 		annuncioService.inserisciNuovo(annuncioDTO.buildAnnuncioModel(true));
 
 		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
@@ -183,7 +181,8 @@ public class AnnuncioController {
 	@PostMapping("/acquista")
 	public String acquisto(@RequestParam Long idAnnuncioForAcquisto, Model model, RedirectAttributes redirectAttrs,
 			HttpServletRequest request) {
-
+		
+		//Spostare logica in Annuncio Service
 		UtenteDTO utenteInSessione = (UtenteDTO) request.getSession().getAttribute("userInfo");
 
 		try {
@@ -206,7 +205,7 @@ public class AnnuncioController {
 	@GetMapping("/acquistaWithoutAuth")
 	public String acquistaWithoutAuth(@RequestParam(required = true) Long idAnnuncioWithNoAuth,
 			Model model, RedirectAttributes redirectAttrs,HttpServletRequest request, Principal principal) {
-		System.out.println("maledetto   "+idAnnuncioWithNoAuth);
+	
 		if (principal != null) {
 			return this.acquisto(idAnnuncioWithNoAuth, model, redirectAttrs, request);
 		}
