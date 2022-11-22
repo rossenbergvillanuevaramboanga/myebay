@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +15,7 @@ import it.prova.myebay.model.StatoUtente;
 import it.prova.myebay.model.Utente;
 import it.prova.myebay.repository.utente.UtenteRepository;
 
+@PropertySource("messages_it.properties")
 @Service
 public class UtenteServiceImpl implements UtenteService {
 
@@ -21,6 +24,9 @@ public class UtenteServiceImpl implements UtenteService {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	@Value( "${utente.password.reset.value}" )
+	private String resetPassword;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -106,6 +112,15 @@ public class UtenteServiceImpl implements UtenteService {
 			utenteInstance.setStato(StatoUtente.ATTIVO);
 
 	}
+	
+	@Override
+	public void resetUserPassword(Long idUtente) {
+		Utente utenteInstance = caricaSingoloElemento(idUtente);
+		if (utenteInstance == null)
+			throw new RuntimeException("Elemento non trovato.");
+		utenteInstance.setPassword(passwordEncoder.encode(resetPassword));
+		repository.save(utenteInstance);
+	}
 
 	@Override
 	@Transactional(readOnly = true)
@@ -119,5 +134,7 @@ public class UtenteServiceImpl implements UtenteService {
 		utenteInSessione.setPassword(passwordEncoder.encode(passwordDTO.getPassword()));
 		repository.save(utenteInSessione);
 	}
+
+	
 
 }

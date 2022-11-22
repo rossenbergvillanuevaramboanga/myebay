@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.prova.myebay.dto.PasswordDTO;
+import it.prova.myebay.dto.RuoloDTO;
 import it.prova.myebay.model.Utente;
 import it.prova.myebay.service.UtenteService;
 import it.prova.myebay.validation.ValidationNoPassword;
@@ -41,7 +42,7 @@ public class AccountController {
 	
 	@PostMapping("/updatePassword")
 	public String updatePassword(
-			@Validated({ ValidationWithPassword.class,ValidationNoPassword.class }) @ModelAttribute("change_password_utente_attr") PasswordDTO passwordDTO,
+			@Validated({ValidationWithPassword.class}) @ModelAttribute("change_password_utente_attr") PasswordDTO passwordDTO,
 			BindingResult result, 
 			Model model, 
 			RedirectAttributes redirectAttrs) {
@@ -49,19 +50,16 @@ public class AccountController {
 		UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Utente utenteInSessione = utenteService.findByUsername(principal.getUsername());
 		
-		//Controlli
-		if(passwordDTO.getPassword().isBlank() || passwordDTO.getConfermaPassword().isBlank() || passwordDTO.getVecchiaPassword().isBlank()){
-			model.addAttribute("errorMessage","Sono presenti errori di validazione");
-			return "utente/editPassword";
-		}
 		
-		if(!passwordDTO.getPassword().equals(passwordDTO.getConfermaPassword())) {
-			model.addAttribute("errorMessage","Le due password non coincidono");
-			return "utente/editPassword";
-		}
+		if (!result.hasFieldErrors("password") && !passwordDTO.getPassword().equals(passwordDTO.getConfermaPassword()))
+			result.rejectValue("confermaPassword", "password.diverse");
 		
 		if(!passwordEncoder.matches(passwordDTO.getVecchiaPassword(), utenteInSessione.getPassword())) {
-			model.addAttribute("errorMessage","La vecchia password è errata");
+			result.rejectValue("vecchiaPassword", "password.old.error");
+		}
+
+		if (result.hasErrors()) {
+			model.addAttribute("change_password_utente_attr", new PasswordDTO());
 			return "utente/editPassword";
 		}
 		

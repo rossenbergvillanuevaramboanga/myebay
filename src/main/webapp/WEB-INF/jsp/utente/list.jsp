@@ -55,6 +55,7 @@
 											<a class="btn btn-sm btn-outline-secondary" href="${pageContext.request.contextPath}/utente/show/${utenteItem.id }">Visualizza</a>
 											<a class="btn  btn-sm btn-outline-primary ml-2 mr-2" href="${pageContext.request.contextPath}/utente/edit/${utenteItem.id }">Edit</a>
 											<a id="changeStatoLink_#_${utenteItem.id }" class="btn btn-outline-${utenteItem.isAttivo()?'danger':'success'} btn-sm link-for-modal" data-bs-toggle="modal" data-bs-target="#confirmOperationModal"  >${utenteItem.isAttivo()?'Disabilita':'Abilita'}</a>
+											<a id="resetPasswordLink_#_${utenteItem.id }" class="btn btn-outline-warning btn-sm link-for-modal-reset-password" data-bs-toggle="modal" data-bs-target="#confirmResetModal"  >Reset Password</a>
 										</td>
 									</tr>
 								</c:forEach>
@@ -73,7 +74,7 @@
 	
 	
 	
-	<!-- Modal -->
+	<!-- Modal Activate/Deactivate -->
 	<div class="modal fade" id="confirmOperationModal" tabindex="-1"  aria-labelledby="confirmOperationModalLabel"
 	    aria-hidden="true">
 	    <div class="modal-dialog" >
@@ -96,6 +97,30 @@
 	    </div>
 	</div>
 	<!-- end Modal -->
+	
+	<!-- Modal Reset -->
+	<div class="modal fade" id="confirmResetModal" tabindex="-1"  aria-labelledby="confirmOperationModalLabel"
+	    aria-hidden="true">
+	    <div class="modal-dialog" >
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <h5 class="modal-title" id="confirmOperationModalLabel">Conferma Reset Password</h5>
+	                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	            </div>
+	            <div class="modal-body">
+	                Continuare con il reset della Password?
+	            </div>
+	            <form method="post" action="${pageContext.request.contextPath}/utente/resetPassword" >
+		            <div class="modal-footer">
+		            	<input type="hidden" name="idUtenteForPasswordReset" id="idUtenteForPasswordReset">
+		                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+		                <input type="submit" value="Continua"  class="btn btn-primary">
+		            </div>
+	            </form>
+	        </div>
+	    </div>
+	</div>
+	<!-- end Modal -->
 	<script type="text/javascript">
 		<!-- aggancio evento click al conferma del modal  -->
 		$(".link-for-modal").click(function(){
@@ -103,6 +128,13 @@
 			var callerId = $(this).attr('id').substring(18);
 			<!-- imposto nell'hidden del modal l'id da postare alla servlet -->
 			$('#idUtenteForChangingStato').val(callerId);
+		});
+		
+		$(".link-for-modal-reset-password").click(function(){
+			<!-- mi prendo il numero che poi sarà l'id. Il 18 è perché 'changeStatoLink_#_' è appunto lungo 18  -->
+			var callerId = $(this).attr('id').substring(20);
+			<!-- imposto nell'hidden del modal l'id da postare alla servlet -->
+			$('#idUtenteForPasswordReset').val(callerId);
 		});
 	</script>
 	

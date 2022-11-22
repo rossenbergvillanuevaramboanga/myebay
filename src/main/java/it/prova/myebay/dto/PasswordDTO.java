@@ -1,9 +1,16 @@
 package it.prova.myebay.dto;
 
+import javax.validation.constraints.NotBlank;
+
+import it.prova.myebay.validation.ValidationWithPassword;
+
 public class PasswordDTO {
 	
+	@NotBlank(message = "{password.old.notblank}", groups = ValidationWithPassword.class)
 	private String vecchiaPassword;
+	@NotBlank(message = "{password.new.notblank}", groups = ValidationWithPassword.class)
 	private String password;
+	@NotBlank(message = "{password.confirm.notblank}", groups = ValidationWithPassword.class)
 	private String confermaPassword;
 	
 	public String getVecchiaPassword() {

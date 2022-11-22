@@ -30,4 +30,6 @@ public interface UtenteService {
 	public Utente findByUsername(String username);
 
 	public void changePassword(PasswordDTO passwordDTO, Utente utenteInSessione);
+
+	public void resetUserPassword(Long idUtente);
 }
