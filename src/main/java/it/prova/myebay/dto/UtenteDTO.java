@@ -29,6 +29,8 @@ public class UtenteDTO {
 	@NotBlank(message = "{password.notblank}", groups = ValidationWithPassword.class)
 	@Size(min = 8, max = 15, message = "Il valore inserito deve essere lungo tra {min} e {max} caratteri")
 	private String password;
+	
+	private String vecchiaPassword;
 
 	private String confermaPassword;
 
@@ -51,6 +53,15 @@ public class UtenteDTO {
 	private Set<Acquisto> acquisti = new HashSet<>();
 
 	public UtenteDTO() {
+	}
+	
+
+	public String getVecchiaPassword() {
+		return vecchiaPassword;
+	}
+
+	public void setVecchiaPassword(String vecchiaPassword) {
+		this.vecchiaPassword = vecchiaPassword;
 	}
 
 	public UtenteDTO(Long id, String username, String nome, String cognome, StatoUtente stato, Integer creditoResiduo) {

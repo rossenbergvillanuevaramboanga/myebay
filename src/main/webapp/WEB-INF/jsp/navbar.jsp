@@ -34,21 +34,17 @@
 		   </sec:authorize>
         </ul>
       </div>
-      <sec:authorize access="isAuthenticated()">
       
-      <div class="col-md-3 text-end">
-       <li class="nav-item dropdown">
-		        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Gestione Utenti</a>
-		        <div class="dropdown-menu" aria-labelledby="dropdown01">
-		          <a class="dropdown-item" href="${pageContext.request.contextPath}/utente/search">Ricerca Utenti</a>
-		          <a class="dropdown-item" href="${pageContext.request.contextPath}/utente/insert">Inserisci Utente</a>
-		      </li>
-	 </div>
-		      
-	      
-	        <p class="navbar-text">Utente: <sec:authentication property="name"/> (${userInfo.nome } ${userInfo.cognome })
-	    	 <a href="${pageContext.request.contextPath}/logout">Logout</a></p>
-	      </div>
+      <!-- Sezione a destra -->
+      <div>
+      <sec:authorize access="isAuthenticated()">
+      		<li class="nav-item dropdown text-primary">
+		        <a class="nav-link dropdown-toggle text-light" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Utente: <sec:authentication property="name"/> (${userInfo.nome } ${userInfo.cognome })</a>
+		        <div class="dropdown-menu " aria-labelledby="dropdown07">
+		          <a class="dropdown-item" href="${pageContext.request.contextPath}/account/editPassword">Cambia Password</a>
+		          <a class="dropdown-item" href="${pageContext.request.contextPath}/logout">Logout</a>
+		        </div>
+		    </li>    	 
       </sec:authorize>
       
       <sec:authorize access="!isAuthenticated()">
@@ -56,6 +52,8 @@
 	        <p class="navbar-text"><a href="${pageContext.request.contextPath}/login">Login</a></p>
 	      </div>
       </sec:authorize>
+    </div>
+    
     </div>
   </nav>
   
