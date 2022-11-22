@@ -126,8 +126,8 @@ public class AnnuncioController {
 			return "annuncio/insert";
 		}
 		//Inserire nel service
-		UtenteDTO utenteInSessione = (UtenteDTO) request.getSession().getAttribute("userInfo");
-		annuncioDTO.setUtente(utenteInSessione);
+//		UtenteDTO utenteInSessione = (UtenteDTO) request.getSession().getAttribute("userInfo");
+//		annuncioDTO.setUtente(utenteInSessione);
 		annuncioService.inserisciNuovo(annuncioDTO.buildAnnuncioModel(true));
 
 		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");

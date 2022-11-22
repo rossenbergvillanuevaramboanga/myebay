@@ -59,7 +59,7 @@
 				        <h1 class="display-5 fw-bold">Benvenuto su MyEbay</h1>
 				        <p class="col-md-8 fs-4">Using a series of utilities, you can create this jumbotron, just like the one in previous versions of Bootstrap. </p>
 				</div>
-			    <div class='card-header text-blue text-center'>
+			    <div class='card-header bg-primary text-white text-center'>
 			        <h5>Ricerca Annunci</h5> 
 			    </div>
 			    <div class='card-body '>

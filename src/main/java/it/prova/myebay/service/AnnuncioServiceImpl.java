@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,9 @@ public class AnnuncioServiceImpl implements AnnuncioService{
 	
 	@Autowired
 	private AcquistoRepository acquistoRepository;
+	
+	@Autowired
+	private UtenteService utenteService;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -56,10 +61,11 @@ public class AnnuncioServiceImpl implements AnnuncioService{
 	@Override
 	@Transactional
 	public void inserisciNuovo(Annuncio annuncioInstance) {
+		UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		annuncioInstance.setUtente(utenteService.findByUsername(principal.getUsername()));
 		annuncioInstance.setData(new Date());
 		annuncioInstance.setAperto(true);
 		repository.save(annuncioInstance);
-		
 	}
 
 	@Override
