@@ -52,17 +52,14 @@
 				  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" ></button>
 				</div>
 			    
-			     <div class="p-5 mb-4 bg-light rounded-3">
-				      <div class="container-fluid py-5">
+			  </div>
+			  <div class="container">
+			   <div class="p-5 mb-4 bg-light rounded-3">
+			   <div class="container-fluid py-5">
 				        <h1 class="display-5 fw-bold">Benvenuto su MyEbay</h1>
 				        <p class="col-md-8 fs-4">Using a series of utilities, you can create this jumbotron, just like the one in previous versions of Bootstrap. </p>
-				      </div>
-			    </div>
-			    
-			  </div>
-			  
-			  <div class='card w-50 mx-auto '>
-			    <div class='card-header text-center'>
+				</div>
+			    <div class='card-header text-blue text-center'>
 			        <h5>Ricerca Annunci</h5> 
 			    </div>
 			    <div class='card-body '>
@@ -93,6 +90,48 @@
 	
 							
 						</form>
+					</div>
+					
+					<sec:authorize access="isAuthenticated()">
+			  <!--  features di bootstrap 'Columns with icons'  -->
+			  <div class="container px-4 py-5" id="featured-3">
+			    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+			      <div class="feature col">
+			        <div class="feature-icon bg-primary bg-gradient">
+			          <svg class="bi" width="1em" height="1em"><use xlink:href="#collection"/></svg>
+			        </div>
+			        <h2>Inserisci Annuncio</h2>
+			        <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
+			        <a href="${pageContext.request.contextPath}/annuncio/insert" class="icon-link">
+			          Vai alla funzionalità
+			          <svg class="bi" width="1em" height="1em"><use xlink:href="#chevron-right"/></svg>
+			        </a>
+			      </div>
+			      <div class="feature col">
+			        <div class="feature-icon bg-primary bg-gradient">
+			          <svg class="bi" width="1em" height="1em"><use xlink:href="#people-circle"/></svg>
+			        </div>
+			        <h2>Ricerca Acquisti</h2>
+			        <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
+			        <a href="${pageContext.request.contextPath}/acquisto/search" class="icon-link">
+			          Vai alla funzionalità
+			          <svg class="bi" width="1em" height="1em"><use xlink:href="#chevron-right"/></svg>
+			        </a>
+			      </div>
+			      <div class="feature col">
+			        <div class="feature-icon bg-primary bg-gradient">
+			          <svg class="bi" width="1em" height="1em"><use xlink:href="#toggles2"/></svg>
+			        </div>
+			        <h2>Other functionality</h2>
+			        <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
+			        <a href="${pageContext.request.contextPath}/annuncio/list" class="icon-link">
+			          Work in Progress
+			          <svg class="bi" width="1em" height="1em"><use xlink:href="#chevron-right"/></svg>
+			        </a>
+			      </div>
+			    </div>
+			  </div>
+			  </sec:authorize>
 			    
 				<!-- end card-body -->			   
 			    </div>

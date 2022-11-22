@@ -12,11 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import it.prova.myebay.dto.AcquistoDTO;
-import it.prova.myebay.dto.AnnuncioDTO;
-import it.prova.myebay.dto.CategoriaDTO;
 import it.prova.myebay.dto.UtenteDTO;
 import it.prova.myebay.model.Acquisto;
-import it.prova.myebay.model.Annuncio;
 import it.prova.myebay.service.AcquistoService;
 
 @Controller

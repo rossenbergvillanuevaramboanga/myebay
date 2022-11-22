@@ -1,7 +1,6 @@
 package it.prova.myebay.web.controller;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.security.Principal;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,16 +22,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import it.prova.myebay.dto.AcquistoDTO;
 import it.prova.myebay.dto.AnnuncioDTO;
 import it.prova.myebay.dto.CategoriaDTO;
-import it.prova.myebay.dto.RuoloDTO;
 import it.prova.myebay.dto.UtenteDTO;
 import it.prova.myebay.exceptions.FondoInsufficienteException;
 import it.prova.myebay.model.Annuncio;
-import it.prova.myebay.model.Utente;
 import it.prova.myebay.service.AcquistoService;
 import it.prova.myebay.service.AnnuncioService;
 import it.prova.myebay.service.CategoriaService;
-import it.prova.myebay.validation.ValidationNoPassword;
-import it.prova.myebay.validation.ValidationWithPassword;
 
 @Controller
 @RequestMapping(value = "/annuncio")
@@ -44,7 +38,7 @@ public class AnnuncioController {
 
 	@Autowired
 	private CategoriaService categoriaService;
-	
+
 	@Autowired
 	private AcquistoService acquistoService;
 
@@ -61,10 +55,10 @@ public class AnnuncioController {
 	public String listAnnunci(Annuncio annuncioExample, ModelMap model, HttpServletRequest request) {
 
 		UtenteDTO utenteInSessione = (UtenteDTO) request.getSession().getAttribute("userInfo");
-		
-		if(utenteInSessione == null) {
-		model.addAttribute("annunci_list_attribute", AnnuncioDTO
-				.createAnnuncioDTOFromModelList(annuncioService.findByExample(annuncioExample), false, false));
+
+		if (utenteInSessione == null) {
+			model.addAttribute("annunci_list_attribute", AnnuncioDTO
+					.createAnnuncioDTOFromModelList(annuncioService.findByExample(annuncioExample), false, false));
 		} else {
 			annuncioExample.setUtente(utenteInSessione.buildUtenteModel(false));
 			model.addAttribute("annunci_list_attribute", AnnuncioDTO
@@ -123,13 +117,15 @@ public class AnnuncioController {
 	}
 
 	@PostMapping("/save")
-	public String save(@Valid @ModelAttribute("insert_annuncio_attr") AnnuncioDTO annuncioDTO,
-			BindingResult result, Model model, RedirectAttributes redirectAttrs, HttpServletRequest request) {
+	public String save(@Valid @ModelAttribute("insert_annuncio_attr") AnnuncioDTO annuncioDTO, BindingResult result,
+			Model model, RedirectAttributes redirectAttrs, HttpServletRequest request) {
 
 		if (result.hasErrors()) {
-			model.addAttribute("categorie_totali_attr", CategoriaDTO.createCategoriaDTOListFromModelList(categoriaService.listAll()));
+			model.addAttribute("categorie_totali_attr",
+					CategoriaDTO.createCategoriaDTOListFromModelList(categoriaService.listAll()));
 			return "annuncio/insert";
 		}
+		//Inserire nel service
 		UtenteDTO utenteInSessione = (UtenteDTO) request.getSession().getAttribute("userInfo");
 		annuncioDTO.setUtente(utenteInSessione);
 		annuncioService.inserisciNuovo(annuncioDTO.buildAnnuncioModel(true));
@@ -137,39 +133,43 @@ public class AnnuncioController {
 		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
 		return "redirect:/annuncio/listUtente";
 	}
-	
+
 	@GetMapping("/delete/{idAnnuncio}")
 	public String delete(@PathVariable(required = true) Long idAnnuncio, Model model, HttpServletRequest request) {
-		AnnuncioDTO annuncioDTO = AnnuncioDTO.buildAnnuncioDTOFromModel(annuncioService.caricaSingoloElementoConCategorie(idAnnuncio), false, true);
+		AnnuncioDTO annuncioDTO = AnnuncioDTO
+				.buildAnnuncioDTOFromModel(annuncioService.caricaSingoloElementoConCategorie(idAnnuncio), false, true);
 		model.addAttribute("delete_annuncio_attr", annuncioDTO);
-		model.addAttribute("categorie_annuncio_attr", CategoriaDTO
-				.createCategoriaDTOListFromModelList(categoriaService.cercaCategorieByIds(annuncioDTO.getCategorieIds())));
+		model.addAttribute("categorie_annuncio_attr", CategoriaDTO.createCategoriaDTOListFromModelList(
+				categoriaService.cercaCategorieByIds(annuncioDTO.getCategorieIds())));
 		return "annuncio/delete";
 	}
-	
+
 	@PostMapping("/remove")
 	public String remove(@RequestParam Long idAnnuncio, RedirectAttributes redirectAttrs) {
 
 		annuncioService.rimuovi(idAnnuncio);
-		
+
 		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
 		return "redirect:/annuncio/listUtente";
 	}
-	
+
 	@GetMapping("/edit/{idAnnuncio}")
 	public String edit(@PathVariable(required = true) Long idAnnuncio, Model model, HttpServletRequest request) {
-		AnnuncioDTO annuncioDTO = AnnuncioDTO.buildAnnuncioDTOFromModel(annuncioService.caricaSingoloElementoConCategorie(idAnnuncio), false, true);
+		AnnuncioDTO annuncioDTO = AnnuncioDTO
+				.buildAnnuncioDTOFromModel(annuncioService.caricaSingoloElementoConCategorie(idAnnuncio), false, true);
 		model.addAttribute("edit_annuncio_attr", annuncioDTO);
-		model.addAttribute("categorie_totali_attr", CategoriaDTO.createCategoriaDTOListFromModelList(categoriaService.listAll()));
+		model.addAttribute("categorie_totali_attr",
+				CategoriaDTO.createCategoriaDTOListFromModelList(categoriaService.listAll()));
 		return "annuncio/edit";
 	}
-	
+
 	@PostMapping("/update")
-	public String update(@Valid @ModelAttribute("edit_annuncio_attr") AnnuncioDTO annuncioDTO,
-			BindingResult result, Model model, RedirectAttributes redirectAttrs, HttpServletRequest request) {
+	public String update(@Valid @ModelAttribute("edit_annuncio_attr") AnnuncioDTO annuncioDTO, BindingResult result,
+			Model model, RedirectAttributes redirectAttrs, HttpServletRequest request) {
 
 		if (result.hasErrors()) {
-			model.addAttribute("categorie_totali_attr", CategoriaDTO.createCategoriaDTOListFromModelList(categoriaService.listAll()));
+			model.addAttribute("categorie_totali_attr",
+					CategoriaDTO.createCategoriaDTOListFromModelList(categoriaService.listAll()));
 			return "annuncio/edit";
 		}
 		UtenteDTO utenteInSessione = (UtenteDTO) request.getSession().getAttribute("userInfo");
@@ -179,26 +179,39 @@ public class AnnuncioController {
 		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
 		return "redirect:/annuncio/listUtente";
 	}
-	
+
 	@PostMapping("/acquista")
-	public String acquisto(@RequestParam Long idAnnuncioForAcquisto, Model model, RedirectAttributes redirectAttrs, HttpServletRequest request) {
+	public String acquisto(@RequestParam Long idAnnuncioForAcquisto, Model model, RedirectAttributes redirectAttrs,
+			HttpServletRequest request) {
 
 		UtenteDTO utenteInSessione = (UtenteDTO) request.getSession().getAttribute("userInfo");
-		
+
 		try {
 			annuncioService.acquista(idAnnuncioForAcquisto, utenteInSessione.buildUtenteModel(false));
-		}catch(FondoInsufficienteException ex){
+		} catch (FondoInsufficienteException ex) {
 			redirectAttrs.addFlashAttribute("errorMessage", "Credito insufficiente.");
 			return "redirect:/annuncio";
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			redirectAttrs.addFlashAttribute("errorMessage", "Si e' verificato un errore.");
 			return "redirect:/annuncio";
 		}
-		
+
 		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
-		model.addAttribute("acquisti_list_attribute", AcquistoDTO.createAcquistoDTOFromModelList(acquistoService.findAllAcquistiEagerUtente(utenteInSessione.getId()), true));
+		model.addAttribute("acquisti_list_attribute", AcquistoDTO.createAcquistoDTOFromModelList(
+				acquistoService.findAllAcquistiEagerUtente(utenteInSessione.getId()), true));
 		return "acquisto/list";
+	}
+
+	@GetMapping("/acquistaWithoutAuth")
+	public String acquistaWithoutAuth(@RequestParam(required = true) Long idAnnuncioWithNoAuth,
+			Model model, RedirectAttributes redirectAttrs,HttpServletRequest request, Principal principal) {
+		System.out.println("maledetto   "+idAnnuncioWithNoAuth);
+		if (principal != null) {
+			return this.acquisto(idAnnuncioWithNoAuth, model, redirectAttrs, request);
+		}
+		model.addAttribute("idAnnuncioWithNoAuth", idAnnuncioWithNoAuth);
+		return "/login";
 	}
 
 }

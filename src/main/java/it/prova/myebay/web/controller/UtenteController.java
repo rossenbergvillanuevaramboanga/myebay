@@ -27,7 +27,6 @@ import it.prova.myebay.service.UtenteService;
 import it.prova.myebay.validation.ValidationNoPassword;
 import it.prova.myebay.validation.ValidationWithPassword;
 
-
 @Controller
 @RequestMapping(value = "/utente")
 public class UtenteController {
@@ -54,94 +53,94 @@ public class UtenteController {
 
 	@PostMapping("/list")
 	public String listUtenti(Utente utenteExample, ModelMap model) {
-		
+
 		model.addAttribute("utente_list_attribute",
 				UtenteDTO.createUtenteDTOListFromModelList(utenteService.findByExample(utenteExample), false));
 		return "utente/list";
 	}
-	
+
 	@PostMapping("/cambiaStato")
 	public String cambiaStato(@RequestParam(name = "idUtenteForChangingStato", required = true) Long idUtente) {
 		utenteService.changeUserAbilitation(idUtente);
 		return "redirect:/utente";
 	}
-	
+
 	@GetMapping("/show/{idUtente}")
 	public String showUtente(@PathVariable(required = true) Long idUtente, Model model) {
 		Utente utenteModel = utenteService.caricaSingoloUtenteConRuoli(idUtente);
 		UtenteDTO result = UtenteDTO.buildUtenteDTOFromModel(utenteModel, true);
 		model.addAttribute("show_utente_attr", result);
-		model.addAttribute("ruoli_utente_attr", RuoloDTO.createRuoloDTOListFromModelList(ruoloService.cercaRuoliByIds(result.getRuoliIds())));
+		model.addAttribute("ruoli_utente_attr",
+				RuoloDTO.createRuoloDTOListFromModelList(ruoloService.cercaRuoliByIds(result.getRuoliIds())));
 		return "utente/show";
 	}
-	
+
 	@GetMapping("/insert")
 	public String create(Model model) {
 		model.addAttribute("ruoli_totali_attr", RuoloDTO.createRuoloDTOListFromModelList(ruoloService.listAll()));
 		model.addAttribute("insert_utente_attr", new UtenteDTO());
 		return "utente/insert";
 	}
-	
-	// per la validazione devo usare i groups in quanto nella insert devo validare
-		// la pwd, nella edit no
-		@PostMapping("/save")
-		public String save(
-				@Validated({ ValidationWithPassword.class,
-						ValidationNoPassword.class }) @ModelAttribute("insert_utente_attr") UtenteDTO utenteDTO,
-				BindingResult result, Model model, RedirectAttributes redirectAttrs) {
 
-			if (!result.hasFieldErrors("password") && !utenteDTO.getPassword().equals(utenteDTO.getConfermaPassword()))
-				result.rejectValue("confermaPassword", "password.diverse");
+	@PostMapping("/save")
+	public String save(
+			@Validated({ ValidationWithPassword.class,
+					ValidationNoPassword.class }) @ModelAttribute("insert_utente_attr") UtenteDTO utenteDTO,
+			BindingResult result, Model model, RedirectAttributes redirectAttrs) {
 
-			if (result.hasErrors()) {
-				model.addAttribute("ruoli_totali_attr", RuoloDTO.createRuoloDTOListFromModelList(ruoloService.listAll()));
-				return "utente/insert";
-			}
-			utenteService.inserisciNuovo(utenteDTO.buildUtenteModel(true));
+		if (!result.hasFieldErrors("password") && !utenteDTO.getPassword().equals(utenteDTO.getConfermaPassword()))
+			result.rejectValue("confermaPassword", "password.diverse");
 
-			redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
-			return "redirect:/utente";
+		if (result.hasErrors()) {
+			model.addAttribute("ruoli_totali_attr", RuoloDTO.createRuoloDTOListFromModelList(ruoloService.listAll()));
+			return "utente/insert";
 		}
-		
-		@PostMapping("/saveSignUp")
-		public String saveSignUp(
-				@Validated({ ValidationWithPassword.class,
-						ValidationNoPassword.class }) @ModelAttribute("insert_utente_attr") UtenteDTO utenteDTO,
-				BindingResult result, Model model, RedirectAttributes redirectAttrs) {
+		utenteService.inserisciNuovo(utenteDTO.buildUtenteModel(true));
 
-			if (result.hasErrors()) {
-				return "utente/insert";
-			}
-			
-			if (!result.hasFieldErrors("password") && !utenteDTO.getPassword().equals(utenteDTO.getConfermaPassword()))
-				result.rejectValue("confermaPassword", "Le password sono diverse");
+		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
+		return "redirect:/utente";
+	}
 
-			utenteService.inserisciNuovo(utenteDTO.buildUtenteModel(false));
+	@PostMapping("/saveSignUp")
+	public String saveSignUp(
+			@Validated({ ValidationWithPassword.class,
+					ValidationNoPassword.class }) @ModelAttribute("insert_utente_attr") UtenteDTO utenteDTO,
+			BindingResult result, Model model, RedirectAttributes redirectAttrs) {
 
-			redirectAttrs.addFlashAttribute("successMessage", "Registrato! Potrai accedere una volta che l'admin avra' abilitato il tuo account.");
-			return "redirect:/login";
+		if (result.hasErrors()) {
+			return "utente/insert";
 		}
-		
-		@GetMapping("/edit/{idUtente}")
-		public String edit(@PathVariable(required = true) Long idUtente, Model model) {
-			Utente utenteModel = utenteService.caricaSingoloUtenteConRuoli(idUtente);
-			model.addAttribute("edit_utente_attr", UtenteDTO.buildUtenteDTOFromModel(utenteModel,true));
+
+		if (!result.hasFieldErrors("password") && !utenteDTO.getPassword().equals(utenteDTO.getConfermaPassword()))
+			result.rejectValue("confermaPassword", "Le password sono diverse");
+
+		utenteService.inserisciNuovo(utenteDTO.buildUtenteModel(false));
+
+		redirectAttrs.addFlashAttribute("successMessage",
+				"Registrato! Potrai accedere una volta che l'admin avra' abilitato il tuo account.");
+		return "redirect:/login";
+	}
+
+	@GetMapping("/edit/{idUtente}")
+	public String edit(@PathVariable(required = true) Long idUtente, Model model) {
+		Utente utenteModel = utenteService.caricaSingoloUtenteConRuoli(idUtente);
+		model.addAttribute("edit_utente_attr", UtenteDTO.buildUtenteDTOFromModel(utenteModel, true));
+		model.addAttribute("ruoli_totali_attr", RuoloDTO.createRuoloDTOListFromModelList(ruoloService.listAll()));
+		return "utente/edit";
+	}
+
+	@PostMapping("/update")
+	public String update(@Validated(ValidationNoPassword.class) @ModelAttribute("edit_utente_attr") UtenteDTO utenteDTO,
+			BindingResult result, Model model, RedirectAttributes redirectAttrs, HttpServletRequest request) {
+
+		if (result.hasErrors()) {
 			model.addAttribute("ruoli_totali_attr", RuoloDTO.createRuoloDTOListFromModelList(ruoloService.listAll()));
 			return "utente/edit";
 		}
-		
-		@PostMapping("/update")
-		public String update(@Validated(ValidationNoPassword.class) @ModelAttribute("edit_utente_attr") UtenteDTO utenteDTO,
-				BindingResult result, Model model, RedirectAttributes redirectAttrs, HttpServletRequest request) {
+		utenteService.aggiorna(utenteDTO.buildUtenteModel(true));
 
-			if (result.hasErrors()) {
-				model.addAttribute("ruoli_totali_attr", RuoloDTO.createRuoloDTOListFromModelList(ruoloService.listAll()));
-				return "utente/edit";
-			}
-			utenteService.aggiorna(utenteDTO.buildUtenteModel(true));
+		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
+		return "redirect:/utente";
+	}
 
-			redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
-			return "redirect:/utente";
-		}
-	
 }

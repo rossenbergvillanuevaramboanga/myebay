@@ -1,3 +1,4 @@
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!doctype html>
 <html lang="it">
@@ -10,14 +11,15 @@
 	
 	
 		 <!-- Custom styles for login -->
-	    <link href="assets/css/signin.css" rel="stylesheet">
+	    <link href="${pageContext.request.contextPath}/assets/css/signin.css" rel="stylesheet">
 	</head>
 	
 	<body class="text-center">
 		<main class="form-signin">
-		<a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/home">Home</a>
-			<form class="form-signin" name='login' action="login" method='POST' novalidate="novalidate">
-		   	
+		
+		
+			<form class="form-signin" name='login' action="${pageContext.request.contextPath}/login" method='POST' novalidate="novalidate">
+		   	  
 			   	<div class="alert alert-danger alert-dismissible fade show ${errorMessage==null?'d-none': ''}" role="alert">
 				  ${errorMessage}
 				</div>
@@ -30,8 +32,9 @@
 				  ${infoMessage}
 				</div>
 				
+				<input type="hidden" name="idAnnuncioWithNoAuth" value="${idAnnuncioWithNoAuth }">
 				
-			  	<img class="mb-4" src="./assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+			  	<img class="mb-4" src="${pageContext.request.contextPath}/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
 				<h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 		    	
 		    	
@@ -50,6 +53,7 @@
 			      </label>
 			    </div>
 			    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+			    <a class="w-100 btn btn-lg btn-secondary" href="${pageContext.request.contextPath}/home">Home</a>
 			    <p class="mt-5 mb-3 text-muted">&copy; 2022-2023</p>
 			    Not registered? 
 			    <a href="${pageContext.request.contextPath}/utente/insert">Click here</a>

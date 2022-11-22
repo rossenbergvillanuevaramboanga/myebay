@@ -36,8 +36,7 @@ public class AnnuncioServiceImpl implements AnnuncioService{
 	@Override
 	@Transactional(readOnly = true)
 	public Annuncio caricaSingoloElemento(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.findById(id).orElse(null);
 	}
 
 	@Override
